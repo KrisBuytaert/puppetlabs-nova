@@ -41,7 +41,14 @@ class nova(
   }
 
   class { 'nova::utilities': }
-  package { ["python-nova", "nova-common", "nova-doc"]:
+
+  package { "nova-common":
+	name => $operatingsystem ? {
+		"default" => "nova-common,nova-doc",
+		"centos"  => "openstack-nova" },
+	ensure => present, 
+  }	
+  package { "python-nova":
     ensure  => present,
     require => Package["python-greenlet"]
   }

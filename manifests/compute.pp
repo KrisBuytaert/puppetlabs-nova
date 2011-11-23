@@ -17,6 +17,10 @@ class nova::compute(
   }
 
   package { "nova-compute":
+    name   => $operatingsystem ? {
+	'default' => 'nova-compute',
+	'centos'  => 'openstack-nova-compute'},
+
     ensure => present,
     require => Package['nova-common'],
   }

@@ -16,11 +16,19 @@ class nova::api($enabled=false) {
   }
 
   package { "nova-api":
+    name    => $operatingsystem ? { 
+	'default' => 'nova-api',
+	'centos'  => 'openstack-nova-api' },
     ensure  => present,
     require => Package["python-greenlet"],
     notify  => Exec['initial-db-sync'],
   }
+
   service { "nova-api":
+    name    => $operatingsystem ? {
+	'default' => 'nova-api',
+	'centos'  => 'openstack-nova-api'},
+
     ensure  => $service_ensure,
     enable  => $enabled,
     require => Package["nova-api"],

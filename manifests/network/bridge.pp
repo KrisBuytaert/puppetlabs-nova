@@ -20,7 +20,15 @@ define nova::network::bridge ( $ip, $netmask = "255.255.255.0" )
       }
     }
 
-    default: { fail('nova::network_bridge currently only supports Debian and Ubuntu') }
+    default: { 
 
+	 network::interface { $name:
+            bootproto => 'static',
+            ipaddr    =>  $ip,
+            netmask   =>  $netmask,
+            ipv6init  =>  'no',
+            onboot    =>  'yes',
+        }  
+	}
   }
 }

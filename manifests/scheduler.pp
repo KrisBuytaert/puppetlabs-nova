@@ -10,11 +10,18 @@ class nova::scheduler( $enabled ) {
   }
 
   package { "nova-scheduler":
+    name    => $operatingsystem ? {
+	'default' => 'nova-scheduler',
+	'centos'  => 'openstack-nova-scheduler'},
     ensure  => present,
     require => Package["python-greenlet"]
   }
 
   service { "nova-scheduler":
+    name    => $operatingsystem ? {
+	'default' => 'nova-scheduler',
+	'centos'  => 'openstack-nova-scheduler'},
+
     ensure  => $service_ensure,
     enable  => $enabled,
     require => Package["nova-scheduler"],

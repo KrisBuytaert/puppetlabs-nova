@@ -10,11 +10,20 @@ class nova::objectstore( $enabled=false ) {
   }
 
   package { "nova-objectstore":
+    name    => $operatingsystem ? {
+	'default' => 'nova-objectstore',
+	'centos'  => 'openstack-nova-objectstore'},
+
     ensure  => present,
+
     require => Package["python-greenlet"]
   }
 
   service { "nova-objectstore":
+    name    => $operatingsystem ? {
+	'default' => 'nova-objectstore',
+	'centos' => 'openstack-nova-objectstore'},
+
     ensure  => $service_ensure,
     enable  => $enabled,
     require => Package["nova-objectstore"],

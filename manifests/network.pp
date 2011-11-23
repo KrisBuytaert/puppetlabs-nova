@@ -10,11 +10,17 @@ class nova::network( $enabled=false ) {
   }
 
   package { "nova-network":
+    name    => $operatingsystem ? {
+	'default' => "nova-network",
+	'centos'  => "openstack-nova-network"},
     ensure  => present,
     require => Package["python-greenlet"]
   }
 
   service { "nova-network":
+    name    => $operatingsystem ? {
+	'default' => "nova-network",
+	'centos' => "openstack-nova-network"},
     ensure  => $service_ensure,
     enable  => $enabled,
     require => Package["nova-network"],
